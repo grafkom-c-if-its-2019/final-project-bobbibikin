@@ -7,9 +7,10 @@ var heroSphere, heroSphere2, rollingSpeed=0.008, heroRollingSpeed, worldRadius=2
 var pathAngleValues, heroBaseY=1.8,heroBaseY2=1.8,bounceValue=0.1, bounceValue2=0.1, gravity=0.005, leftLane=-1, rightLane=1;
 var middleLane=0, currentLane, currentLane2, clock, jumping, jumping2, treeReleaseInterval=0.5, lastTreeReleaseTime=0;
 var treesInPath, treesPool, particleGeometry, particleCount=20, explosionPower=1.06;
-var particles, stats, scoreText, score, hasCollided;
+var particles, stats, scoreText, score, hasCollided, hasCollided2;
 var boleh1,boleh2;
 var temp1, temp2;
+var tinggi1, tinggi2;
 function init() {
 	// set up the scene
 	createScene();
@@ -20,6 +21,7 @@ function init() {
 
 function createScene(){
 	hasCollided=false;
+	hasCollided2=false;
 	score=0;
 	treesInPath=[], treesPool=[];
 	clock=new THREE.Clock();
@@ -95,7 +97,7 @@ function Controller1() {
 	// var delta = clock.getDelta();
 	// var moveDistance = 5*delta;
 	//P1
-		if(keyboard.pressed("up")){
+		if(keyboard.pressed("up") && !tinggi1) {
 			bounceValue=0.1;
 			jumping=true;
 			validMove=false;
@@ -130,7 +132,7 @@ function Controller1() {
 function Controller2(){
 	// if(!boleh2) return;
 	var validMove2=true;
-	if(keyboard.pressed("W")  ){
+	if(keyboard.pressed("W") && !tinggi2 ){
 		bounceValue2=0.1;
 		jumping2=true
 		validMove2=false;
@@ -161,6 +163,21 @@ function Controller2(){
 	// 	}
 
 }
+function addExplosion(){
+	particleGeometry = new THREE.Geometry();
+	for (var i = 0; i < particleCount; i ++ ) {
+		var vertex = new THREE.Vector3();
+		particleGeometry.vertices.push( vertex );
+	}
+	var pMaterial = new THREE.ParticleBasicMaterial({
+	  color: 0xfffafa,
+	  size: 0.2
+	});
+	particles = new THREE.Points( particleGeometry, pMaterial );
+	scene.add( particles );
+	particles.visible=false;
+}
+
 function addExplosion(){
 	particleGeometry = new THREE.Geometry();
 	for (var i = 0; i < particleCount; i ++ ) {
@@ -408,6 +425,30 @@ function tightenTree(vertices,sides,currentTier){
 	}
 }
 
+function cektinggi(){
+	if(heroSphere2.position.y>3.5)
+	{
+		heroSphere2.position.y=THREE.Math.lerp(heroSphere2.position.y,heroBaseY2, 0.05);
+		tinggi2 = true;
+	}
+	if(heroSphere.position.y>3.5)
+	{
+		heroSphere.position.y=THREE.Math.lerp(heroSphere.position.y,heroBaseY, 0.05);
+		tinggi1 = true;
+	}
+}
+
+function updatetinggi(){
+	if(heroSphere.position.y < 2)
+	{
+		tinggi1 = false;
+	}
+	if(heroSphere2.position.y < 2)
+	{
+		tinggi2 = false;
+	}
+}
+
 function updatetemp(){
 
 	if(currentLane==currentLane2){
@@ -489,6 +530,7 @@ function cektabrak(){
 	{
 		currentLane = temp1;
 		currentLane2 = temp2;
+		explode(heroSphere);
 	}
 
 
@@ -524,6 +566,8 @@ function update(){
 	}
 	cektabrak();
 	updatetemp();
+	cektinggi();
+	updatetinggi();
     heroSphere.position.x=THREE.Math.lerp(heroSphere.position.x,currentLane, 0.05);//2*clock.getDelta()
 	if(heroSphere2.position.x==currentLane2){
 		boleh2=true;
@@ -538,6 +582,10 @@ function update(){
     	clock.start();
     	addPathTree();
     	if(!hasCollided){
+			score+=2*treeReleaseInterval;
+			scoreText.innerHTML=score.toString();
+		}
+		if(!hasCollided2){ // belom scorenya
 			score+=2*treeReleaseInterval;
 			scoreText.innerHTML=score.toString();
 		}
@@ -560,10 +608,15 @@ function doTreeLogic(){
 		if(treePos.z>6 &&oneTree.visible){//gone out of our view zone
 			treesToRemove.push(oneTree);
 		}else{//check collision
-			if(treePos.distanceTo(heroSphere.position)<=0.6 && treePos.distanceTo(heroSphere2.position)<=0.6){
+			if(treePos.distanceTo(heroSphere.position)<=0.6){
 				console.log("hit");
 				hasCollided=true;
-				explode();
+				explode(heroSphere);
+			}
+			if(treePos.distanceTo(heroSphere2.position)<=0.6){
+				console.log("hit");
+				hasCollided2=true;
+				explode(heroSphere2);
 			}
 		}
 	});
@@ -589,10 +642,10 @@ function doExplosionLogic(){
 	}
 	particleGeometry.verticesNeedUpdate = true;
 }
-function explode(){
-	particles.position.y=2;
+function explode(objek){
+	particles.position.y=objek.position.y;
 	particles.position.z=4.8;
-	particles.position.x=heroSphere.position.x;
+	particles.position.x=objek.position.x;
 	for (var i = 0; i < particleCount; i ++ ) {
 		var vertex = new THREE.Vector3();
 		vertex.x = -0.2+Math.random() * 0.4;
