@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>FP GRAFKOM</title>
+    <style>
+        canvas {
+            display: block; /* fix necessary to remove space at bottom of canvas */
+        }
+        body{
+            margin: 0px;
+            overflow: hidden;
+        }
+    </style>
+
+</head>
+<body>
+    <script src="https://threejs.org/build/three.min.js"></script>
+    <script src="THREEx.KeyboardState.js"></script>
+    <script src="assets/OBJLoader.js"></script>
+    <script src="assets/MTLLoader.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/16.3.5/Tween.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/TweenMax.min.js"></script>
+    <script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
+    <script>
+        // Create a scene which will hold all our meshes to be rendered
+        var scene = new THREE.Scene();
+        // Create and position a camera
+        var camera = new THREE.PerspectiveCamera(
+            60,                                   // Field of view
+            window.innerWidth/window.innerHeight, // Aspect ratio
+            0.1,                                  // Near clipping pane
+            1000                                  // Far clipping pane
+        );
+        // Reposition the camera
+        camera.position.set(0,0,8);
+        // Point the camera at a given coordinate
+        camera.lookAt(new THREE.Vector3(0,0,0));
+        // Create a renderer
+        var renderer = new THREE.WebGLRenderer({ antialias: true });
+        // Size should be the same as the window
+        renderer.setSize( window.innerWidth, window.innerHeight );
+        // Set a near white clear color (default is black)
+        renderer.setClearColor( 0x2aaeb2);
+        // Append to the document
+        document.body.appendChild( renderer.domElement );
+            const canvas = renderer.domElement;
+
+        
+        window.addEventListener( 'resize', onWindowResize, false );
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize( window.innerWidth, window.innerHeight );
+        } 
+
+        var light1 = new THREE.AmbientLight(0xffffff, 0.5, 100);
+        light1.position.set( 0, 0, 50 );
+        scene.add(light1);
+        var light2 = new THREE.AmbientLight(0xffffff, 0.4, 100);
+        scene.add(light2);
+        var light3 = new THREE.PointLight(0xffffff, 1, 100);
+        light3.position.set( 0, 0, -50 );
+        scene.add(light3);
+        var light4 = new THREE.PointLight(0xffffff, 1, 100);
+        light4.position.set( 50, 0, 0 );
+        scene.add(light4);
+        var light5 = new THREE.PointLight(0xffffff, 1, 100);
+        light5.position.set( -50, 0, 0 );
+        scene.add(light5);
+        var light6 = new THREE.PointLight(0xffffff, 1, 100);
+        light6.position.set( 0, 10, 0 );
+        scene.add(light6);
+
+        //lapangan
+        var boxWidth = 9;
+        var boxHeight = 4.5;
+        var boxDepth = 0.5;
+        var geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
+        var material = new THREE.MeshLambertMaterial({color: 0xC1C5D0});
+        var mesh = new THREE.Mesh(geometry, material);
+        mesh.position.z = 0;
+        mesh.position.x = 0;
+        
+        scene.add(mesh);
+
+        //bates atas
+        var boxWidth = 9;
+        var boxHeight = 0.2;
+        var boxDepth = 1;
+        var geometry2 = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
+        var material2 = new THREE.MeshLambertMaterial({color: 0xffffff});
+        var mesh2 = new THREE.Mesh(geometry2, material2);
+        mesh2.position.y = 2.35;
+        mesh2.position.z = 0.25
+        mesh2.position.x = 0;
+        
+        scene.add(mesh2);
+
+        //bates atas
+        var boxWidth = 9;
+        var boxHeight = 0.2;
+        var boxDepth = 1;
+        var geometry3 = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
+        var material3 = new THREE.MeshLambertMaterial({color: 0xffffff});
+        var mesh3 = new THREE.Mesh(geometry3, material3);
+        mesh3.position.y = -2.35;
+        mesh3.position.z = 0.25
+        mesh3.position.x = 0;
+        
+        scene.add(mesh3);
+
+        //bates kanan atas
+        var boxWidth = 0.2;
+        var boxHeight = 1.7;
+        var boxDepth = 1;
+        var geometry4 = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
+        var material4 = new THREE.MeshLambertMaterial({color: 0xffffff});
+        var mesh4 = new THREE.Mesh(geometry4, material4);
+        mesh4.position.y = 1.6;
+        mesh4.position.z = 0.25
+        mesh4.position.x = 4.6;
+        
+        scene.add(mesh4);
+
+        //bates kanan bawah
+        var boxWidth = 0.2;
+        var boxHeight = 1.7;
+        var boxDepth = 1;
+        var geometry5 = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
+        var material5 = new THREE.MeshLambertMaterial({color: 0xffffff});
+        var mesh5 = new THREE.Mesh(geometry5, material5);
+        mesh5.position.y = -1.6;
+        mesh5.position.z = 0.25
+        mesh5.position.x = 4.6;
+        
+        scene.add(mesh5);
+
+        //bates kiri atas
+        var boxWidth = 0.2;
+        var boxHeight = 1.7;
+        var boxDepth = 1;
+        var geometry6 = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
+        var material6 = new THREE.MeshLambertMaterial({color: 0xffffff});
+        var mesh6 = new THREE.Mesh(geometry6, material6);
+        mesh6.position.y = 1.6;
+        mesh6.position.z = 0.25
+        mesh6.position.x = -4.6;
+        
+        scene.add(mesh6);
+
+         //bates kanan bawah
+         var boxWidth = 0.2;
+        var boxHeight = 1.7;
+        var boxDepth = 1;
+        var geometry7 = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
+        var material7 = new THREE.MeshLambertMaterial({color: 0xffffff});
+        var mesh7 = new THREE.Mesh(geometry7, material7);
+        mesh7.position.y = -1.6;
+        mesh7.position.z = 0.25
+        mesh7.position.x = -4.6;
+        
+        scene.add(mesh7);
+        
+        //garis tengah
+        var boxWidth = 0.1;
+        var boxHeight = 4.5;
+        var boxDepth = 0.1;
+        var geometry8 = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
+        var material8 = new THREE.MeshLambertMaterial({color: 0xffffff});
+        var mesh8 = new THREE.Mesh(geometry8, material8);
+        mesh8.position.z = 0.21;
+        mesh8.position.x = 0;
+        
+        scene.add(mesh8);
+
+        //Lingkaran tengah
+        var geometry9 = new THREE.RingBufferGeometry( 1.3, 1.5, 32);
+        var material9 = new THREE.MeshBasicMaterial( { color: 0xffffff, side: THREE.DoubleSide } );
+        var mesh9 = new THREE.Mesh(geometry9, material9);
+        mesh9.position.z = 0.265;
+        scene.add(mesh9);
+
+        //garis gawang kanan tengah
+        var boxWidth = 0.1;
+        var boxHeight = 1.7;
+        var boxDepth = 0.1;
+        var geometry10 = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
+        var material10 = new THREE.MeshLambertMaterial({color: 0xffffff});
+        var mesh10 = new THREE.Mesh(geometry10, material10);
+        mesh10.position.z = 0.21;
+        mesh10.position.x = 3.5;
+        
+        scene.add(mesh10);
+
+        //garis gawang kanan atas
+        var boxWidth = 1.1;
+        var boxHeight = 0.1;
+        var boxDepth = 0.1;
+        var geometry11 = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
+        var material11 = new THREE.MeshLambertMaterial({color: 0xffffff});
+        var mesh11 = new THREE.Mesh(geometry11, material11);
+        mesh11.position.z = 0.21;
+        mesh11.position.y = 0.9;
+        mesh11.position.x = 4;
+        
+        scene.add(mesh11);
+
+        //garis gawang kanan bawah
+        var boxWidth = 1.1;
+        var boxHeight = 0.1;
+        var boxDepth = 0.1;
+        var geometry12 = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
+        var material12 = new THREE.MeshLambertMaterial({color: 0xffffff});
+        var mesh12 = new THREE.Mesh(geometry12, material12);
+        mesh12.position.z = 0.21;
+        mesh12.position.y = -0.9;
+        mesh12.position.x = 4;
+        
+        scene.add(mesh12);
+
+        //garis gawang kiri tengah
+        var boxWidth = 0.1;
+        var boxHeight = 1.7;
+        var boxDepth = 0.1;
+        var geometry13 = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
+        var material13 = new THREE.MeshLambertMaterial({color: 0xffffff});
+        var mesh13 = new THREE.Mesh(geometry13, material13);
+        mesh13.position.z = 0.21;
+        mesh13.position.x = -3.5;
+
+        scene.add(mesh13);
+
+        //garis gawang kiri atas
+        var boxWidth = 1.1;
+        var boxHeight = 0.1;
+        var boxDepth = 0.1;
+        var geometry14 = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
+        var material14 = new THREE.MeshLambertMaterial({color: 0xffffff});
+        var mesh14 = new THREE.Mesh(geometry14, material14);
+        mesh14.position.z = 0.21;
+        mesh14.position.y = 0.9;
+        mesh14.position.x = -4;
+        
+        scene.add(mesh14);
+
+        //garis gawang kiri bawah
+        var boxWidth = 1.1;
+        var boxHeight = 0.1;
+        var boxDepth = 0.1;
+        var geometry15 = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
+        var material15 = new THREE.MeshLambertMaterial({color: 0xffffff});
+        var mesh15 = new THREE.Mesh(geometry15, material15);
+        mesh15.position.z = 0.21;
+        mesh15.position.y = -0.9;
+        mesh15.position.x = -4;
+        
+        scene.add(mesh15);
+
+        //pemain1
+        var boxWidth = 0.3;
+        var boxHeight = 0.5;
+        var boxDepth = 0.3;
+        var geometry16 = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
+        var material16 = new THREE.MeshLambertMaterial({color: 0xffff00});
+        var player1 = new THREE.Mesh(geometry16, material16);
+        player1.position.z = 0.4;
+        player1.position.x = 4;
+
+        scene.add(player1);
+
+        //pemain2
+        var boxWidth = 0.3;
+        var boxHeight = 0.5;
+        var boxDepth = 0.3;
+        var geometry16 = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
+        var material16 = new THREE.MeshLambertMaterial({color: 0xffff00});
+        var player2 = new THREE.Mesh(geometry16, material16);
+        player2.position.z = 0.4;
+        player2.position.x = -4;
+
+        scene.add(player2);
+
+        //bola
+        var geometry = new THREE.CylinderGeometry( 0.2, 0.2, 0.1, 32 );
+        var material = new THREE.MeshBasicMaterial( {color: 0xffff00} );
+        var bola = new THREE.Mesh( geometry, material );
+
+
+        bola.position.z = 0.275;
+        geometry.center();
+        bola.rotation.x = Math.PI/2;
+        scene.add(bola);
+
+        //tulisan p1
+        var loader = new THREE.FontLoader();
+            loader.load( 'https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function ( font ) {
+                var strine="P1";
+                var geometry = new THREE.TextGeometry( strine, {
+                    font: font,
+                    size: 1,
+                    height: 0.2,
+                    curveSegments: 0,
+                } );
+                geometry.center();
+                const material = new THREE.MeshPhongMaterial({
+                    color: 0xFFFFFFF,
+                });
+                const p1 = new THREE.Mesh(geometry, material);
+                scene.add(p1);
+                p1.position.x=4.2;
+                p1.position.y=3.25;
+                p1.rotation.y-=0.2;
+        });
+
+        //tulisan p2
+        var loader = new THREE.FontLoader();
+            loader.load( 'https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function ( font ) {
+                var strine="P2";
+                var geometry = new THREE.TextGeometry( strine, {
+                    font: font,
+                    size: 1,
+                    height: 0.2,
+                    curveSegments: 0,
+                } );
+                geometry.center();
+                const material = new THREE.MeshPhongMaterial({
+                    color: 0xFFFFFFF,
+                });
+                const p2 = new THREE.Mesh(geometry, material);
+                scene.add(p2);
+                p2.position.x=-4.2;
+                p2.position.y=3.25;
+                p2.rotation.y+=0.2;
+        });
+
+        //petir2
+        
+        var petir = new THREE.Group();
+        var mtlLoader = new THREE.MTLLoader();
+        mtlLoader.setTexturePath('assets/');
+        mtlLoader.setPath('assets/');
+        mtlLoader.load('lightning.mtl', function (materials) {
+            materials.preload();
+            var objLoader = new THREE.OBJLoader();
+            objLoader.setMaterials(materials);
+            objLoader.setPath('assets/');
+            objLoader.load('lightning.obj', function (object) {
+                object.traverse( function( node ) {
+                    if( node.material ) {
+                        node.material.side = THREE.DoubleSide;
+                    }
+                }); 
+                object.rotation.x+=1.6;
+                petir.add(object);
+            });
+        }); 
+        // Render the scene/camera combination
+        //renderer.render(scene, camera);
+
+        // Add an orbit control which allows us to move around the scene. See the three.js example for more details
+        // https://github.com/mrdoob/three.js/blob/dev/examples/js/controls/OrbitControls.
+
+        //var controls = new THREE.OrbitControls( camera, renderer.domElement );
+        //controls.enableKeys =false;
+        //controls.addEventListener( 'change', function() { renderer.render(scene, camera); } ); // add this only if there is no animation loop (requestAnimationFrame)
+
+    
+        //RAYCASTER
+        /*
+        function clicking(pickPosition,scene,camera,time){
+            pickHelper.pick(pickPosition, scene, camera, time);
+        }
+
+        class PickHelper {
+            constructor() {
+            this.raycaster = new THREE.Raycaster();
+            this.pickedObject = null;
+            this.pickedObjectSavedColor = 0;
+            }
+            pick(normalizedPosition, scene, camera, time) {
+            // restore the color if there is a picked object
+            if (this.pickedObject) {
+                this.pickedObject.material.emissive.setHex(this.pickedObjectSavedColor);
+                this.pickedObject = undefined;
+            }
+
+            // cast a ray through the frustum
+            this.raycaster.setFromCamera(normalizedPosition, camera);
+            // get the list of objects the ray intersected
+            const intersectedObjects = this.raycaster.intersectObjects(scene.children);
+            if (intersectedObjects.length) {
+                // pick the first object. It's the closest one
+                this.pickedObject = intersectedObjects[0].object;
+                // save its color
+                this.pickedObjectSavedColor = this.pickedObject.material.emissive.getHex();
+                // set its emissive color to flashing red/yellow
+                this.pickedObject.material.emissive.setHex((time * 8) % 2 > 1 ? 0xFFFF00 : 0xFF0000);
+                //scene.remove(this.pickedObject);
+                }
+            }
+        }
+
+        const pickPosition = {x: 0, y: 0};
+        const pickHelper = new PickHelper();
+        clearPickPosition();
+        function getCanvasRelativePosition(event) {
+            const rect = canvas.getBoundingClientRect();
+            return {
+            x: event.clientX - rect.left,
+            y: event.clientY - rect.top,
+            };
+        }
+
+        function setPickPosition(event) {
+            const pos = getCanvasRelativePosition(event);
+            pickPosition.x = (pos.x / canvas.clientWidth ) *  2 - 1;
+            pickPosition.y = (pos.y / canvas.clientHeight) * -2 + 1;  // note we flip Y
+        }
+
+        function clearPickPosition() {
+            pickPosition.x = -100000;
+            pickPosition.y = -100000;
+        }
+        window.addEventListener('mousedown', setPickPosition);
+        window.addEventListener('mouseup', clearPickPosition);
+        */
+        //GAMEPLAY
+        var clock = new THREE.Clock();
+        var keyboard = new THREEx.KeyboardState();
+
+        function reset(x,y){
+            score(p1,p2);
+            ball_speed*=-1;
+            game_pause=1;
+            player2.position.x = -4;
+            player2.position.y = 0;
+            player1.position.y = 0;
+            player1.position.x = 4;
+            bola.position.y = y;
+            bola.position.x = x;
+        }
+
+        var p1=0;
+        var p2=0;
+        score(p1,p2);
+        var objList=[];
+        function score(a,b){
+            if(objList!=null&&objList.length!=0){
+                for (let i=0; i<objList.length;i++){
+                    scene.remove(objList[i]);
+                }
+            }
+            var loader = new THREE.FontLoader();
+            loader.load( 'https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function ( font ) {
+                var strine=a.toString();
+                var geometry = new THREE.TextGeometry( strine, {
+                    font: font,
+                    size: 1,
+                    height: 0.2,
+                    curveSegments: 0,
+                } );
+                geometry.center();
+                const material = new THREE.MeshPhongMaterial({
+                    color: 0xFFFFFFF,
+                });
+                const text = new THREE.Mesh(geometry, material);
+                scene.add(text);
+                text.position.x=1;
+                text.position.y=3.25;
+                text.rotation.x+=0.1;
+                objList.push(text);
+            });
+
+            var loader = new THREE.FontLoader();
+            loader.load( 'https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function ( font ) {
+                var strine=":";
+                var geometry = new THREE.TextGeometry( strine, {
+                    font: font,
+                    size: 1,
+                    height: 0.2,
+                    curveSegments: 0,
+                } );
+                geometry.center();
+                const material = new THREE.MeshPhongMaterial({
+                    color: 0xFFFFFFF,
+                });
+                const text = new THREE.Mesh(geometry, material);
+                scene.add(text);
+                text.position.y=3.25;
+                text.rotation.x+=0.1;
+                objList.push(text);
+            });
+
+            var loader = new THREE.FontLoader();
+            loader.load( 'https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function ( font ) {
+                var strine=b.toString();
+                var geometry = new THREE.TextGeometry( strine, {
+                    font: font,
+                    size: 1,
+                    height: 0.2,
+                    curveSegments: 0,
+                } );
+                geometry.center();
+                const material = new THREE.MeshPhongMaterial({
+                    color: 0xFFFFFFF,
+                });
+                const text = new THREE.Mesh(geometry, material);
+                scene.add(text);
+                text.position.x=-1;
+                text.position.y=3.25;
+                text.rotation.x+=0.1;
+                objList.push(text);
+            });
+        }
+
+        function get_random_angle( minimum, maximum ){
+            var randomnumber = Math.random() * ( maximum - minimum ) + minimum;
+            return randomnumber;
+        }
+        
+
+        var group = new THREE.Group();
+        function whoWon(){
+            winner="Player 2 WON!"
+            if(p1>p2){
+                winner="Player 1 WON!"
+            }
+            var loader = new THREE.FontLoader();
+                loader.load( 'https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function ( font ) {
+                    var strine=winner;
+                    var geometry = new THREE.TextGeometry( strine, {
+                        font: font,
+                        size: 0.8,
+                        height: 0.1,
+                        curveSegments: 0,
+                    } );
+                    geometry.center();
+                    const material = new THREE.MeshPhongMaterial({
+                        color: 0xFFFFFFF,
+                    });
+                    const text = new THREE.Mesh(geometry, material);
+                    text.position.z=1;
+                    group.add(text);
+                });
+            var loader = new THREE.FontLoader();
+                loader.load( 'https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function ( font ) {
+                    var strine="Press Enter To Restart.";
+                    var geometry = new THREE.TextGeometry( strine, {
+                        font: font,
+                        size: 0.4,
+                        height: 0.05,
+                    } );
+                    geometry.center();
+                    const material = new THREE.MeshPhongMaterial({
+                        color: 0xff4113,
+                    });
+                    const text1 = new THREE.Mesh(geometry, material);
+                    text1.position.z=1;
+                    text1.position.y=-1;
+                    group.add(text1);
+                });
+            scene.add(group);
+        }
+                
+        function Controller() {
+            var delta = clock.getDelta();
+            var moveDistance = 5*delta;
+            //P1
+            if(game_end==0){
+                if(keyboard.pressed("up") && player1.position.y<2 ){
+                    player1.position.y+=moveDistance;
+                }
+                if( keyboard.pressed("left")  &&player1.position.x>0.2 ){
+                    player1.position.x-=moveDistance;
+                }
+                if( keyboard.pressed("down") && player1.position.y>-2 ){
+                    player1.position.y-=moveDistance;
+                }
+                if( keyboard.pressed("right")  &&player1.position.x<4.2 ){
+                    player1.position.x+=moveDistance;
+                }
+                //P2
+                if(keyboard.pressed("W") &&player2.position.y<2 ){
+                    player2.position.y+=moveDistance;
+                }
+                if( keyboard.pressed("A") &&player2.position.x>-4.2 ){
+                    player2.position.x-=moveDistance;
+                }
+                if( keyboard.pressed("S") &&player2.position.y>-2 ){
+                    player2.position.y-=moveDistance;
+                }
+                if( keyboard.pressed("D") &&player2.position.x<-0.2 ){
+                    player2.position.x+=moveDistance;
+                }
+                if( keyboard.pressed("space")){ 
+                    if(game_pause==0){
+                        game_pause=1;
+                    }
+                }
+                if( keyboard.pressed("R")){ 
+                    if(game_pause==1){
+                        game_pause=0;
+                    }
+                }
+            }
+            if( keyboard.pressed("Enter") ){
+                if(game_end==1){
+                    scene.remove(group);
+                    reset(0,0);
+                    game_pause=0;
+                    game_end=0;
+                    start();
+                }
+            }
+        }
+        
+        var game_end=0;
+        function start(){
+            group = new THREE.Group();
+            pcollide=0;
+            if(highspeed==1){
+                scene.remove(petir);
+                highspeed=0;
+                ball_speed=ball_speed/3;
+            }
+            game_end=0;
+            reset(0,0);
+            game_pause=0;
+        }
+
+        var ball_angle = angleRand();   
+        var ball_speed = 0.1;
+        var game_pause = 0;
+        
+        function angleRand(){
+            var min = -Math.PI/4;
+            var max = Math.PI/4;
+            var randomnumber = Math.random() * (max-min) + min;
+            return randomnumber;
+        }
+        
+        function smartAI1(){
+            player1.position.y=bola.position.y;
+            if(bola.position.x>0&&bola.position.y==0&&game_pause==1){
+                this.tl = new TimelineMax();
+                this.tl.to(player1.position, 0.5, {
+                    x: bola.position.x,
+                    y: bola.position.y,
+                    ease: Expo.easeOut
+                    }  
+                ); 
+                this.tl.to(player1.position, 0.5, {
+                    x: 3,
+                    ease: Expo.easeOut
+                    }  
+                );
+            }
+        }
+        function smartAI2(){
+            if(player2.position.y<bola.position.y&&player2.position.y<2){
+                player2.position.y+=0.03;
+            }
+            if(player2.position.y>bola.position.y&&player2.position.y>-2){
+                player2.position.y-=0.03;
+            }
+            if(bola.position.x<0&&bola.position.y==0&&game_pause==1){
+                this.tl = new TimelineMax();
+                this.tl.to(player2.position, 0.5, {
+                    x: bola.position.x,
+                    y: bola.position.y,
+                    ease: Expo.easeOut
+                    }  
+                ); 
+                this.tl.to(player2.position, 0.5, {
+                    x: -3,
+                    ease: Expo.easeOut
+                    }  
+                );
+            }
+        }
+        var wcollidex=1;
+        var wcollidey=1;
+        var collide=1;
+        var pcollide=0;
+        var highspeed=0;
+        var animate = function (time) {
+            //game
+            if(game_pause==0){
+                bola.position.x += ball_speed * Math.cos( ball_angle );
+                bola.position.y += ball_speed * Math.sin( ball_angle );
+            }
+            //wall_bounce
+            if(((bola.position.x-0.1<-4.2||bola.position.x+0.1>4.2)&&
+                (bola.position.y>0.75||bola.position.y<-0.75))&&
+                wcollidex==0
+            ){
+                ball_speed*=-1;
+                ball_angle = angleRand();
+                wcollidex=1;
+            }
+            if((bola.position.y>2||bola.position.y<-2)&&wcollidey==0&&collide==0){
+                ball_angle*=-1;
+                wcollidey=1;
+            }
+            if(bola.position.y<2&&bola.position.y>-2&&
+                wcollidey==1
+            ){
+                wcollidey=0;
+            }
+            if(bola.position.x<4&&bola.position.y>-4&&
+                wcollidex==1
+            ){
+                wcollidex=0;
+            }
+            //goal
+            if((bola.position.x<-4.2||bola.position.x>4.2)&&
+                (bola.position.y<0.5||bola.position.y>-0.5)
+            ){
+                if(bola.position.x<-4.3){
+                    p1++;
+                    reset(2,0);
+                    ball_speed=Math.abs(ball_speed)
+                    //p1 point
+                }
+                else if(bola.position.x>4.3){
+                    p2++;
+                    reset(-2,0);
+                    ball_speed=Math.abs(ball_speed)*-1
+                    //p2 point
+                }
+            }
+            //powerups
+            var totalscore=p1+p2;
+            if(pcollide==10&&highspeed==0){
+                highspeed=1;
+                scene.add(petir);
+                ball_speed=ball_speed*3;
+                pcollide=0;
+            }
+            if(pcollide==10&&highspeed==1){
+                highspeed=0;
+                scene.remove(petir);
+                ball_speed=ball_speed/3;
+                pcollide=0;
+            }
+            //collide p1
+            if( (bola.position.y+0.1>player1.position.y-0.25) &&
+                (bola.position.y-0.1<player1.position.y+0.25) &&
+                (bola.position.x+0.1>player1.position.x-0.2) &&
+                (bola.position.x-0.1<player1.position.x+0.2) &&
+                collide==0
+                ){
+                game_pause=0;
+                ball_speed*=-1;
+                ball_angle = angleRand();
+                collide=1;
+                pcollide++;
+    			console.log("COLLIDE!"+ball_speed);
+            }
+            //collide p2
+            if( (bola.position.y+0.1>player2.position.y-0.25) &&
+                (bola.position.y-0.1<player2.position.y+0.25) &&
+                (bola.position.x+0.1>player2.position.x-0.2) &&
+                (bola.position.x-0.1<player2.position.x+0.2) &&
+                collide==0
+                ){
+                game_pause=0;
+                ball_speed*=-1;
+                ball_angle = angleRand();
+                collide=1;
+                pcollide++;
+            }
+            if( (Math.abs(bola.position.x-player1.position.x)>0.3) &&   
+                (Math.abs(bola.position.x-player2.position.x)>0.3)
+            ){
+                collide=0;
+            }
+
+            if(p1==7||p2==7){
+                //console.log("PANJANG KELAS"+objList.length)
+                reset(0,0);
+                whoWon();
+                p1=0;
+                p2=0;
+                game_end=1;
+            }
+            //smarter AI
+            /*
+            smartAI1();
+            smartAI2();
+            //raycaster
+            const canvas = renderer.domElement;
+            pickHelper.pick(pickPosition, scene, camera, time);
+            */
+            requestAnimationFrame(animate);
+            Controller();
+            renderer.render(scene, camera);
+        };
+
+        animate();
+    </script>
+</body>
+</html>
