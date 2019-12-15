@@ -224,12 +224,12 @@ function addExplosion(){
 		var vertex = new THREE.Vector3();
 		particleGeometry.vertices.push( vertex );
 	}
-	var texture = THREE.ImageUtils.loadTexture("images/snowflake1.png");
-	// texture.transparent=true;
+	var texture = THREE.ImageUtils.loadTexture("images/salju.jfif");
+	texture.transparent=true;
 	var pMaterial = new THREE.ParticleBasicMaterial({
 	  color: 0xfffafa,
 	  size: 0.2,
-	  map : texture
+	//   map : texture
 	  
 	});
 	particles = new THREE.Points( particleGeometry, pMaterial );
