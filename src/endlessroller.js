@@ -261,10 +261,10 @@ function addWorld(){
 	var sides=40;
 	var tiers=40;
 	var img = new Image();
-	img.src = "images/road.jpg";
-	var texture = new THREE.TextureLoader().load("images/road.jpg");
+	// img.src = "images/road.jpg";
+	// var texture = new THREE.TextureLoader().load("images/senow.jpg");
 	var sphereGeometry = new THREE.SphereGeometry( worldRadius, sides,tiers);
-	var sphereMaterial = new THREE.MeshStandardMaterial( { color :  0xffffff  ,shading:THREE.PhongShading} )
+	var sphereMaterial = new THREE.MeshStandardMaterial( { color: 0xFBFCFC  ,shading:THREE.PhongShading} )
 	
 	var vertexIndex;
 	var vertexVector= new THREE.Vector3();
