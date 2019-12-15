@@ -257,7 +257,7 @@ function addWorld(){
 	img.src = "images/road.jpg";
 	var texture = new THREE.TextureLoader().load("images/road.jpg");
 	var sphereGeometry = new THREE.SphereGeometry( worldRadius, sides,tiers);
-	var sphereMaterial = new THREE.MeshStandardMaterial( { map:texture ,shading:THREE.FlatShading} )
+	var sphereMaterial = new THREE.MeshStandardMaterial( { color :  0xffffff  ,shading:THREE.PhongShading} )
 	
 	var vertexIndex;
 	var vertexVector= new THREE.Vector3();
