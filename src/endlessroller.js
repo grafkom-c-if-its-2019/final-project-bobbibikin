@@ -665,8 +665,8 @@ function update(){
     	addPathTree();
     	if(hasCollided){
 			score1 = score1 - 1;
-			// nabrak = new Audio('src/music/nabrak_pohon.mp3');
-			// nabrak.play();
+			nabrak = new Audio('src/music/nabrak_pohon.mp3');
+			nabrak.play();
 			document.getElementById("scores").innerHTML = score1 + "-" + score2;
 			hasCollided = false;
 		}
