@@ -47,10 +47,13 @@ function createScene(){
 	renderer.setSize( sceneWidth, sceneHeight );
 	
 	// attach ke dom
-    dom = document.getElementById('TutContainer');
+	dom = document.getElementById('TutContainer');
+	// dom2 = document.getElementById('scoreboard');
 	dom.appendChild(renderer.domElement);
+	// dom2.appendChild(renderer.domElement);
 	stats = new Stats();
 	dom.appendChild(stats.dom);
+	// dom2.appendChild(stats.dom);
 	
 	createTreesPool();
 	// addSalju();
@@ -97,16 +100,16 @@ function createScene(){
 	// document.addEventListener('keydown', handleKeyDown2);
 	// document.onkeydown = handleKeyDown2;
 	
-	scoreText = document.createElement('div');
-	scoreText.style.position = 'absolute';
-	//text2.style.zIndex = 1;    // if you still don't see the label, try uncommenting this
-	scoreText.style.width = 100;
-	scoreText.style.height = 100;
-	//scoreText.style.backgroundColor = "blue";
-	scoreText.innerHTML = "0";
-	scoreText.style.top = 10 + 'px';
-	scoreText.style.left = 100 + 'px';
-	document.body.appendChild(scoreText);
+	// scoreText = document.createElement('div');
+	// scoreText.style.position = 'absolute';
+	// //text2.style.zIndex = 1;    // if you still don't see the label, try uncommenting this
+	// scoreText.style.width = 100;
+	// scoreText.style.height = 100;
+	// //scoreText.style.backgroundColor = "blue";
+	// scoreText.innerHTML = "0";
+	// scoreText.style.top = 10 + 'px';
+	// scoreText.style.left = 100 + 'px';
+	// document.body.appendChild(scoreText);
 }
 // var clock = new THREE.Clock();
 var keyboard = new THREEx.KeyboardState();
