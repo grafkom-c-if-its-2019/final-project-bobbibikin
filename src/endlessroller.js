@@ -36,10 +36,10 @@ function createScene(){
 	// Fog	
 	scene = new THREE.Scene();//the 3d scene
 	// scene.fog = new THREE.FogExp2( 0xf0fff0, 0.14 ); 008cff
-	scene.fog = new THREE.FogExp2( 0xf0fff0, 0.14 );//fog yang di scene
+	scene.fog = new THREE.FogExp2( 0xffffff, 0.14 );//fog yang di scene
     camera = new THREE.PerspectiveCamera( 60, sceneWidth / sceneHeight, 0.1, 1000 );//perspective camera
     renderer = new THREE.WebGLRenderer({alpha:true});//renderer with transparent backdrop
-    renderer.setClearColor(0xfffafa, 1); //lebih ke backdrop
+    renderer.setClearColor(0xffffff, 1); //lebih ke backdrop
     renderer.shadowMap.enabled = true;//enable shadow
     renderer.shadowMap.type = THREE.PCFSoftShadowMap; //biar soft
 	renderer.setSize( sceneWidth, sceneHeight );
@@ -222,9 +222,13 @@ function createTreesPool(){
 
 // add object
 function addHero(){
+	var img = new Image();
+	// img.src = "images/road.jpg";
+	var texture = new THREE.TextureLoader().load("images/panda.jpg");
+	var texture2 = new THREE.TextureLoader().load("images/grizzly.jpg");
 	var sphereGeometry = new THREE.DodecahedronGeometry( heroRadius, 2);
-	var sphereMaterial = new THREE.MeshStandardMaterial( { color: 0x008080 ,shading:THREE.FlatShading} )
-	var sphereMaterial2 = new THREE.MeshStandardMaterial( { color: 0xF08080 ,shading:THREE.FlatShading} )
+	var sphereMaterial = new THREE.MeshStandardMaterial( { map: texture2, shading: THREE.FlatShading} )
+	var sphereMaterial2 = new THREE.MeshStandardMaterial( { map: texture, shading:THREE.FlatShading} )
 	jumping=false;
 	jumping2=false;
 	// boleh1=false;
@@ -239,9 +243,11 @@ function addHero(){
 	scene.add( heroSphere, heroSphere2);
 	heroSphere.position.y=heroBaseY;
 	heroSphere.position.z=4.8;
-
+	heroSphere.rotation.y = 1.7;
+	
 	heroSphere2.position.y=heroBaseY2;
 	heroSphere2.position.z=4.8;
+	heroSphere2.rotation.y = 1.7;
 
 	currentLane2=leftLane
 	heroSphere2.position.x = currentLane2;
@@ -302,12 +308,12 @@ function addWorld(){
 
 function addLight(){
 	// A light source positioned directly above the scene, with color fading from the sky color to the ground color.
-	var hemisphereLight = new THREE.HemisphereLight(0xfffafa,0x000000, .9)  //0xffffbb, 0x080820
+	var hemisphereLight = new THREE.HemisphereLight(0xffffff,0xFFFAFA, .9)  //0xffffbb, 0x080820
 	scene.add(hemisphereLight);
 	
 	// sun
-	sun = new THREE.DirectionalLight( 0xcdc1c5, 0.9);
-	sun.position.set( 12,6,-7 );
+	sun = new THREE.DirectionalLight( 0xffffff, 0.5); //0xcdc1c5
+	sun.position.set( 12,10,-7 ); //-7
 	sun.castShadow = true;
 	scene.add(sun);
 
