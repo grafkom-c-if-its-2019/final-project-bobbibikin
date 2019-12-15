@@ -15,7 +15,7 @@ var tinggi1, tinggi2;
 function init() {
 	// set up the scene
 	createScene();
-
+	
 	//call game loop
 	update();
 }
@@ -32,7 +32,9 @@ function createScene(){
 	pathAngleValues=[1.52,1.57,1.62];
     sceneWidth=window.innerWidth;
     sceneHeight=window.innerHeight;
-	
+	bgmusik = new Audio('src/music/intro.mp3');
+	bgmusik.loop=true;
+	bgmusik.play();
 	// Fog	
 	scene = new THREE.Scene();//the 3d scene
 	// scene.fog = new THREE.FogExp2( 0xf0fff0, 0.14 ); 008cff
@@ -51,7 +53,7 @@ function createScene(){
 	dom.appendChild(stats.dom);
 	
 	createTreesPool();
-	addSalju();
+	// addSalju();
 	addWorld();
 	addHero();
 	addLight();
