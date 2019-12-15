@@ -237,10 +237,11 @@ function addHero(){
 function addWorld(){
 	var sides=40;
 	var tiers=40;
-	var img = Image();
-	img.src = "images/road.jpg"
+	var img = new Image();
+	img.src = "images/road.jpg";
+	var texture = new THREE.TextureLoader().load("images/road.jpg");
 	var sphereGeometry = new THREE.SphereGeometry( worldRadius, sides,tiers);
-	var sphereMaterial = new THREE.MeshStandardMaterial( { color: 0xD2B48C ,shading:THREE.FlatShading} )
+	var sphereMaterial = new THREE.MeshStandardMaterial( { map:texture ,shading:THREE.FlatShading} )
 	
 	var vertexIndex;
 	var vertexVector= new THREE.Vector3();
@@ -305,7 +306,7 @@ function addPathTree(){
 	var lane= Math.floor(Math.random()*3);
 	addTree(true,lane);
 	options.splice(lane,1);
-	if(Math.random()>0.1){
+	if(Math.random()>0.05){
 		lane= Math.floor(Math.random()*2);
 		addTree(true,options[lane]);
 	}
@@ -429,12 +430,12 @@ function tightenTree(vertices,sides,currentTier){
 }
 
 function cektinggi(){
-	if(heroSphere2.position.y>3.5)
+	if(heroSphere2.position.y>3)
 	{
 		heroSphere2.position.y=THREE.Math.lerp(heroSphere2.position.y,heroBaseY2, 0.05);
 		tinggi2 = true;
 	}
-	if(heroSphere.position.y>3.5)
+	if(heroSphere.position.y>3)
 	{
 		heroSphere.position.y=THREE.Math.lerp(heroSphere.position.y,heroBaseY, 0.05);
 		tinggi1 = true;
