@@ -510,12 +510,12 @@ function tightenTree(vertices,sides,currentTier){
 }
 
 function cektinggi(){
-	if(heroSphere2.position.y>3)
+	if(heroSphere2.position.y>3.5)
 	{
 		heroSphere2.position.y=THREE.Math.lerp(heroSphere2.position.y,heroBaseY2, 0.05);
 		tinggi2 = true;
 	}
-	if(heroSphere.position.y>3)
+	if(heroSphere.position.y>3.5)
 	{
 		heroSphere.position.y=THREE.Math.lerp(heroSphere.position.y,heroBaseY, 0.05);
 		tinggi1 = true;
