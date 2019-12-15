@@ -205,7 +205,7 @@ function createTreesPool(){
 
 // add object
 function addHero(){
-	var sphereGeometry = new THREE.DodecahedronGeometry( heroRadius, 1);
+	var sphereGeometry = new THREE.DodecahedronGeometry( heroRadius, 2);
 	var sphereMaterial = new THREE.MeshStandardMaterial( { color: 0x008080 ,shading:THREE.FlatShading} )
 	var sphereMaterial2 = new THREE.MeshStandardMaterial( { color: 0xF08080 ,shading:THREE.FlatShading} )
 	jumping=false;
@@ -461,6 +461,11 @@ function updatetemp(){
 		if(currentLane==temp2)
 		{
 			currentLane2=temp1;
+		}
+		if(currentLane==0 && currentLane2 ==0)
+		{
+			currentLane=leftLane;
+			currentLane2=rightLane;
 		}
 
 	}
