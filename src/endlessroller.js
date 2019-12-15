@@ -34,7 +34,7 @@ function createScene(){
     sceneHeight=window.innerHeight;
 	bgmusik = new Audio('src/music/intro.mp3');
 	bgmusik.loop=true;
-	// bgmusik.play();
+	bgmusik.play();
 	// Fog	
 	scene = new THREE.Scene();//the 3d scene
 	// scene.fog = new THREE.FogExp2( 0xf0fff0, 0.14 ); 008cff
@@ -694,6 +694,8 @@ function doTreeLogic(){
 			console.log("hit");
 			hasCollided=true;
 			score1 = score1 -1;
+			// nabrak = new Audio('src/music/nabrak_pohon.mp3');
+			// nabrak.play();
 			document.getElementById("scores").innerHTML = score1 + "-" + score2;
 			explode(heroSphere);
 		}
@@ -727,6 +729,7 @@ function doExplosionLogic(){
 	}else{
 		particles.visible=false;
 	}
+
 	particleGeometry.verticesNeedUpdate = true;
 }
 function doExplosionLogic2(){
@@ -764,6 +767,7 @@ function explode(objek){
 		vertex.z = -0.2+Math.random() * 0.4;
 		particleGeometry.vertices[i]=vertex;
 	}
+
 	explosionPower=1.07;
 	particles.visible=true;
 }
