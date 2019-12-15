@@ -744,9 +744,11 @@ function toggleGameOver() {
     var tudo = document.getElementById('tudo');
     // also get the clock button, so we can change what it says
     var TutContainer = document.getElementById('TutContainer');
+	var scoreboard = document.getElementById('scoreboard');
 
     TutContainer.style.display = 'none';
-    tudo.style.display = 'block';
+	tudo.style.display = 'block';
+	scoreboard.style.display = 'none';
       // change button text
     }
 
