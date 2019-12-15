@@ -694,8 +694,14 @@ function update(){
 	Controller1();
 	Controller2();
 	render();
-	if(score2<=0 || score1<=0)
+	if(score1<=0)
 	{
+		document.getElementById("player").innerHTML = "Player 2 Wins!";
+		toggleGameOver();
+	}
+	else if(score2<=0)
+	{
+		document.getElementById("player").innerHTML = "Player 1 Wins!";
 		toggleGameOver();
 	}
 	else{
@@ -740,8 +746,10 @@ function toggleGameOver() {
     // get the clock
     var tudo = document.getElementById('tudo');
     // also get the clock button, so we can change what it says
-    var TutContainer = document.getElementById('TutContainer');
+	var TutContainer = document.getElementById('TutContainer');
+	var scoreBoard = document.getElementById('scoreboard');
 
+	scoreBoard.style.display = 'none';
     TutContainer.style.display = 'none';
     tudo.style.display = 'block';
       // change button text
