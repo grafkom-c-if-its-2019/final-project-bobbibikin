@@ -360,7 +360,7 @@ function addLight(){
 	scene.add(hemisphereLight);
 	
 	// sun
-	sun = new THREE.DirectionalLight(0xcdc1c5, 0.5); //0xcdc1c5
+	sun = new THREE.DirectionalLight(0xffffff, 0.5); //0xcdc1c5
 	sun.position.set( 12,12,-7 ); //-7
 	sun.castShadow = true;
 	scene.add(sun);
