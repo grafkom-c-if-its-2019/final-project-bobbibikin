@@ -683,7 +683,13 @@ function update(){
 	Controller1();
 	Controller2();
 	render();
-	requestAnimationFrame(update);//request next update
+	if(score2<=0 || score1<=0)
+	{
+		
+	}
+	else{
+		requestAnimationFrame(update);//request next update
+	}
 	
 }
 function doTreeLogic(){
