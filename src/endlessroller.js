@@ -697,11 +697,19 @@ function update(){
 	if(score1<=0)
 	{
 		document.getElementById("player").innerHTML = "Player 2 Wins!";
+		// bgmusik.pause();
+		// kalah = new Audio('src/music/kalah.mp3');
+		// bgmusik.loop=true;
+		// kalah.play();
 		toggleGameOver();
 	}
 	else if(score2<=0)
 	{
 		document.getElementById("player").innerHTML = "Player 1 Wins!";
+		// bgmusik.pause();
+		// kalah = new Audio('src/music/kalah.mp3');
+		// bgmusik.loop=true;
+		// kalah.play();
 		toggleGameOver();
 	}
 	else{
