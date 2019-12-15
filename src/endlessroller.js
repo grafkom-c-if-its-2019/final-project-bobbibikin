@@ -696,7 +696,7 @@ function update(){
 	render();
 	if(score2<=0 || score1<=0)
 	{
-
+		toggleGameOver();
 	}
 	else{
 		requestAnimationFrame(update);//request next update
@@ -735,6 +735,17 @@ function doTreeLogic(){
 		console.log("remove tree");
 	});
 }
+
+function toggleGameOver() {
+    // get the clock
+    var tudo = document.getElementById('tudo');
+    // also get the clock button, so we can change what it says
+    var TutContainer = document.getElementById('TutContainer');
+
+    TutContainer.style.display = 'none';
+    tudo.style.display = 'block';
+      // change button text
+    }
 
 function doExplosionLogic(){
 	if(!particles.visible)return;
