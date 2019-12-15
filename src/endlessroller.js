@@ -6,8 +6,8 @@ var sceneWidth, sceneHeight, camera, scene, renderer, dom, sun, ground, orbitCon
 var heroSphere, heroSphere2, rollingSpeed=0.008, heroRollingSpeed, worldRadius=26, heroRadius=0.2, sphericalHelper;
 var pathAngleValues, heroBaseY=1.8,heroBaseY2=1.8,bounceValue=0.1, bounceValue2=0.1, gravity=0.005, leftLane=-1, rightLane=1;
 var middleLane=0, currentLane, currentLane2, clock, jumping, jumping2, treeReleaseInterval=0.5, lastTreeReleaseTime=0;
-var treesInPath, treesPool, particleGeometry, particleCount=20, explosionPower=1.06;
-var particles, stats, scoreText, score, hasCollided, hasCollided2;
+var treesInPath, treesPool, particleGeometry, particleGeometry2, particleCount=20, particleCount2=8, explosionPower=1.06;
+var particles, particles2, stats, scoreText, score, hasCollided, hasCollided2;
 var boleh1,boleh2;
 var temp1, temp2;
 var tinggi1, tinggi2;
@@ -54,6 +54,7 @@ function createScene(){
 	addHero();
 	addLight();
 	addExplosion();
+	addExplosion2();
 	
 	camera.position.z = 6.5;
 	camera.position.y = 3.5;
@@ -178,19 +179,19 @@ function addExplosion(){
 	particles.visible=false;
 }
 
-function addExplosion(){
-	particleGeometry = new THREE.Geometry();
-	for (var i = 0; i < particleCount; i ++ ) {
+function addExplosion2(){
+	particleGeometry2 = new THREE.Geometry();
+	for (var i = 0; i < particleCount2; i ++ ) {
 		var vertex = new THREE.Vector3();
-		particleGeometry.vertices.push( vertex );
+		particleGeometry2.vertices.push( vertex );
 	}
-	var pMaterial = new THREE.ParticleBasicMaterial({
-	  color: 0xfffafa,
-	  size: 0.2
+	var pMaterial2 = new THREE.ParticleBasicMaterial({
+	  color: 0xFFD700,
+	  size: 0.1
 	});
-	particles = new THREE.Points( particleGeometry, pMaterial );
-	scene.add( particles );
-	particles.visible=false;
+	particles2 = new THREE.Points( particleGeometry2, pMaterial2 );
+	scene.add( particles2 );
+	particles2.visible=false;
 }
 function createTreesPool(){
 	var maxTreesInPool=10;
@@ -530,7 +531,7 @@ function cektabrak(){
 	{
 		currentLane = temp1;
 		currentLane2 = temp2;
-		explode(heroSphere);
+		explode2(heroSphere);
 	}
 
 
@@ -592,6 +593,7 @@ function update(){
     }
     doTreeLogic();
 	doExplosionLogic();
+	doExplosionLogic2();
 	Controller1();
 	Controller2();
 	render();
@@ -642,6 +644,18 @@ function doExplosionLogic(){
 	}
 	particleGeometry.verticesNeedUpdate = true;
 }
+function doExplosionLogic2(){
+	if(!particles2.visible)return;
+	for (var i = 0; i < particleCount2; i ++ ) {
+		particleGeometry2.vertices[i].multiplyScalar(explosionPower);
+	}
+	if(explosionPower>1.005){
+		explosionPower-=0.001;
+	}else{
+		particles2.visible=false;
+	}
+	particleGeometry2.verticesNeedUpdate = true;
+}
 function explode(objek){
 	particles.position.y=objek.position.y;
 	particles.position.z=4.8;
@@ -655,6 +669,20 @@ function explode(objek){
 	}
 	explosionPower=1.07;
 	particles.visible=true;
+}
+function explode2(objek){
+	particles2.position.y=objek.position.y;
+	particles2.position.z=4.8;
+	particles2.position.x=objek.position.x;
+	for (var i = 0; i < particleCount2; i ++ ) {
+		var vertex = new THREE.Vector3();
+		vertex.x = -0.2+Math.random() * 0.4;
+		vertex.y = -0.2+Math.random() * 0.4 ;
+		vertex.z = -0.2+Math.random() * 0.4;
+		particleGeometry2.vertices[i]=vertex;
+	}
+	explosionPower=1.07;
+	particles2.visible=true;
 }
 function render(){
 	
