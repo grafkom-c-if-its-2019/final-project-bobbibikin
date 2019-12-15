@@ -9,6 +9,7 @@ var middleLane=0, currentLane, currentLane2, clock, jumping, jumping2, treeRelea
 var treesInPath, treesPool, particleGeometry, particleGeometry2, particleGeometry3, particleCount=20, particleCount2=8, explosionPower=1.06;
 var particles, particles2, particles3, stats, scoreText, score, hasCollided, hasCollided2;
 var boleh1,boleh2;
+var score1=10, score2=10;
 var temp1, temp2;
 var tinggi1, tinggi2;
 function init() {
@@ -607,12 +608,10 @@ function update(){
     	clock.start();
     	addPathTree();
     	if(!hasCollided){
-			score+=2*treeReleaseInterval;
-			scoreText.innerHTML=score.toString();
+
 		}
 		if(!hasCollided2){ // belom scorenya
-			score+=2*treeReleaseInterval;
-			scoreText.innerHTML=score.toString();
+
 		}
     }
 	doTreeLogic();
@@ -638,11 +637,15 @@ function doTreeLogic(){
 		if(treePos.distanceTo(heroSphere.position)<=0.6){
 			console.log("hit");
 			hasCollided=true;
+			score1 = score1 -1;
+			document.getElementById("scores").innerHTML = score1 + "-" + score2;
 			explode(heroSphere);
 		}
 		if(treePos.distanceTo(heroSphere2.position)<=0.6){
 			console.log("hit2");
 			hasCollided2=true;
+			score2 = score2 -1;
+			document.getElementById("scores").innerHTML = score1 + "-" + score2;
 			explode3(heroSphere2);
 		}
 		
