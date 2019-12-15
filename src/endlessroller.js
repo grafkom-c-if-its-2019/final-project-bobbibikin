@@ -663,11 +663,17 @@ function update(){
     if(clock.getElapsedTime()>treeReleaseInterval){
     	clock.start();
     	addPathTree();
-    	if(!hasCollided){
-
+    	if(hasCollided){
+			score1 = score1 - 1;
+			// nabrak = new Audio('src/music/nabrak_pohon.mp3');
+			// nabrak.play();
+			document.getElementById("scores").innerHTML = score1 + "-" + score2;
+			hasCollided = false;
 		}
-		if(!hasCollided2){ // belom scorenya
-
+		if(hasCollided2){ // belom scorenya
+			score2 = score2 - 1;
+			document.getElementById("scores").innerHTML = score1 + "-" + score2;
+			hasCollided2 = false;
 		}
     }
 	doTreeLogic();
@@ -693,17 +699,11 @@ function doTreeLogic(){
 		if(treePos.distanceTo(heroSphere.position)<=0.6){
 			console.log("hit");
 			hasCollided=true;
-			score1 = score1 -1;
-			// nabrak = new Audio('src/music/nabrak_pohon.mp3');
-			// nabrak.play();
-			document.getElementById("scores").innerHTML = score1 + "-" + score2;
 			explode(heroSphere);
 		}
 		if(treePos.distanceTo(heroSphere2.position)<=0.6){
 			console.log("hit2");
 			hasCollided2=true;
-			score2 = score2 -1;
-			document.getElementById("scores").innerHTML = score1 + "-" + score2;
 			explode3(heroSphere2);
 		}
 		
