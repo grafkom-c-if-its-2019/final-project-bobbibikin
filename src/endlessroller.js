@@ -210,8 +210,8 @@ function addHero(){
 	var sphereMaterial2 = new THREE.MeshStandardMaterial( { color: 0xF08080 ,shading:THREE.FlatShading} )
 	jumping=false;
 	jumping2=false;
-	boleh1=false;
-	boleh2=false;
+	// boleh1=false;
+	// boleh2=false;
 	heroSphere = new THREE.Mesh( sphereGeometry, sphereMaterial );
 	heroSphere.receiveShadow = true;
 	heroSphere.castShadow=true;
