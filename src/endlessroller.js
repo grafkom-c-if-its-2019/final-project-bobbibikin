@@ -303,13 +303,13 @@ function addPathTree(){
 	var lane= Math.floor(Math.random()*3);
 	addTree(true,lane);
 	options.splice(lane,1);
-	if(Math.random()>0.5){
+	if(Math.random()>0.1){
 		lane= Math.floor(Math.random()*2);
 		addTree(true,options[lane]);
 	}
 }
 function addWorldTrees(){
-	var numTrees=36;
+	var numTrees=100;
 	var gap=6.28/36;
 	for(var i=0;i<numTrees;i++){
 		addTree(false,i*gap, true);
