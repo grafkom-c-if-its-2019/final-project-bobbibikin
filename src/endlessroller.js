@@ -237,6 +237,8 @@ function addHero(){
 function addWorld(){
 	var sides=40;
 	var tiers=40;
+	var img = Image();
+	img.src = "images/road.jpg"
 	var sphereGeometry = new THREE.SphereGeometry( worldRadius, sides,tiers);
 	var sphereMaterial = new THREE.MeshStandardMaterial( { color: 0xD2B48C ,shading:THREE.FlatShading} )
 	
