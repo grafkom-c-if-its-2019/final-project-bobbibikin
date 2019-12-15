@@ -34,7 +34,7 @@ function createScene(){
     sceneHeight=window.innerHeight;
 	bgmusik = new Audio('src/music/intro.mp3');
 	bgmusik.loop=true;
-	bgmusik.play();
+	// bgmusik.play();
 	// Fog	
 	scene = new THREE.Scene();//the 3d scene
 	// scene.fog = new THREE.FogExp2( 0xf0fff0, 0.14 ); 008cff
@@ -608,6 +608,8 @@ function cektabrak(){
 	console.log(Math.abs(heroSphere.position.x - heroSphere2.position.x))
 	if(Math.abs(heroSphere.position.x - heroSphere2.position.x) < 0.3)
 	{
+		musik= new Audio('src/music/bounce_baru.mp3');
+		musik.play();
 		currentLane = temp1;
 		currentLane2 = temp2;
 		explode2(heroSphere);
