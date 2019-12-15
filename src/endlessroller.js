@@ -34,6 +34,7 @@ function createScene(){
     sceneHeight=window.innerHeight;
 	bgmusik = new Audio('src/music/intro.mp3');
 	bgmusik.loop=true;
+	bgmusik.volume=0.5;
 	bgmusik.play();
 	// Fog	
 	scene = new THREE.Scene();//the 3d scene
@@ -82,8 +83,8 @@ function createScene(){
 	camera.position.y = 3.5;
 	orbitControl = new THREE.OrbitControls( camera, renderer.domElement );//helper to rotate around in scene
 	orbitControl.addEventListener( 'change', render );
-	//orbitControl.enableDamping = true;
-	//orbitControl.dampingFactor = 0.8;
+	// orbitControl.enableDamping = true;
+	// orbitControl.dampingFactor = 0.8;
 
 	orbitControl.noKeys = true;
 	orbitControl.noPan = true;
@@ -675,6 +676,7 @@ function update(){
     	if(hasCollided){
 			score1 = score1 - 1;
 			nabrak = new Audio('src/music/nabrak_pohon.mp3');
+			nabrak.volume=0.3;
 			nabrak.play();
 			document.getElementById("scores").innerHTML = score1 + "-" + score2;
 			hasCollided = false;
@@ -682,6 +684,7 @@ function update(){
 		if(hasCollided2){ // belom scorenya
 			score2 = score2 - 1;
 			nabrak = new Audio('src/music/nabrak_pohon.mp3');
+			nabrak.volume=0.3;
 			nabrak.play();
 			document.getElementById("scores").innerHTML = score1 + "-" + score2;
 			hasCollided2 = false;
@@ -694,22 +697,8 @@ function update(){
 	Controller1();
 	Controller2();
 	render();
-	if(score1<=0)
+	if(score2<=0 || score1<=0)
 	{
-		document.getElementById("player").innerHTML = "Player 2 Wins!";
-		bgmusik.pause();
-		kalah = new Audio('src/music/kalah.mp3');
-		bgmusik.loop=true;
-		kalah.play();
-		toggleGameOver();
-	}
-	else if(score2<=0)
-	{
-		document.getElementById("player").innerHTML = "Player 1 Wins!";
-		bgmusik.pause();
-		kalah = new Audio('src/music/kalah.mp3');
-		bgmusik.loop=true;
-		kalah.play();
 		toggleGameOver();
 	}
 	else{
@@ -754,10 +743,8 @@ function toggleGameOver() {
     // get the clock
     var tudo = document.getElementById('tudo');
     // also get the clock button, so we can change what it says
-	var TutContainer = document.getElementById('TutContainer');
-	var scoreBoard = document.getElementById('scoreboard');
+    var TutContainer = document.getElementById('TutContainer');
 
-	scoreBoard.style.display = 'none';
     TutContainer.style.display = 'none';
     tudo.style.display = 'block';
       // change button text
