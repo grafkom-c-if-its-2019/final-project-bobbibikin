@@ -6,8 +6,8 @@ var sceneWidth, sceneHeight, camera, scene, renderer, dom, sun, ground, orbitCon
 var heroSphere, heroSphere2, rollingSpeed=0.008, heroRollingSpeed, worldRadius=26, heroRadius=0.2, sphericalHelper;
 var pathAngleValues, heroBaseY=1.8,heroBaseY2=1.8,bounceValue=0.1, bounceValue2=0.1, gravity=0.005, leftLane=-1, rightLane=1;
 var middleLane=0, currentLane, currentLane2, clock, jumping, jumping2, treeReleaseInterval=0.5, lastTreeReleaseTime=0;
-var treesInPath, treesPool, particleGeometry, particleGeometry2, particleCount=20, particleCount2=8, explosionPower=1.06;
-var particles, particles2, stats, scoreText, score, hasCollided, hasCollided2;
+var treesInPath, treesPool, particleGeometry, particleGeometry2, particleGeometry3, particleCount=20, particleCount2=8, explosionPower=1.06;
+var particles, particles2, particles3, stats, scoreText, score, hasCollided, hasCollided2;
 var boleh1,boleh2;
 var temp1, temp2;
 var tinggi1, tinggi2;
@@ -55,6 +55,7 @@ function createScene(){
 	addLight();
 	addExplosion();
 	addExplosion2();
+	addExplosion3();
 	
 	camera.position.z = 6.5;
 	camera.position.y = 3.5;
@@ -193,6 +194,21 @@ function addExplosion2(){
 	scene.add( particles2 );
 	particles2.visible=false;
 }
+
+function addExplosion3(){
+	particleGeometry3 = new THREE.Geometry();
+	for (var i = 0; i < particleCount; i ++ ) {
+		var vertex = new THREE.Vector3();
+		particleGeometry3.vertices.push( vertex );
+	}
+	var pMaterial3 = new THREE.ParticleBasicMaterial({
+	  color: 0xfffafa,
+	  size: 0.2
+	});
+	particles3 = new THREE.Points( particleGeometry3, pMaterial3 );
+	scene.add( particles3 );
+	particles3.visible=false;
+}
 function createTreesPool(){
 	var maxTreesInPool=10;
 	var newTree;
@@ -312,7 +328,7 @@ function addPathTree(){
 	}
 }
 function addWorldTrees(){
-	var numTrees=100;
+	var numTrees=50;
 	var gap=6.28/36;
 	for(var i=0;i<numTrees;i++){
 		addTree(false,i*gap, true);
@@ -599,9 +615,10 @@ function update(){
 			scoreText.innerHTML=score.toString();
 		}
     }
-    doTreeLogic();
+	doTreeLogic();
 	doExplosionLogic();
 	doExplosionLogic2();
+	doExplosionLogic3();
 	Controller1();
 	Controller2();
 	render();
@@ -617,18 +634,18 @@ function doTreeLogic(){
 		treePos.setFromMatrixPosition( oneTree.matrixWorld );
 		if(treePos.z>6 &&oneTree.visible){//gone out of our view zone
 			treesToRemove.push(oneTree);
-		}else{//check collision
-			if(treePos.distanceTo(heroSphere.position)<=0.6){
-				console.log("hit");
-				hasCollided=true;
-				explode(heroSphere);
-			}
-			if(treePos.distanceTo(heroSphere2.position)<=0.6){
-				console.log("hit");
-				hasCollided2=true;
-				explode(heroSphere2);
-			}
 		}
+		if(treePos.distanceTo(heroSphere.position)<=0.6){
+			console.log("hit");
+			hasCollided=true;
+			explode(heroSphere);
+		}
+		if(treePos.distanceTo(heroSphere2.position)<=0.6){
+			console.log("hit2");
+			hasCollided2=true;
+			explode3(heroSphere2);
+		}
+		
 	});
 	var fromWhere;
 	treesToRemove.forEach( function ( element, index ) {
@@ -640,6 +657,7 @@ function doTreeLogic(){
 		console.log("remove tree");
 	});
 }
+
 function doExplosionLogic(){
 	if(!particles.visible)return;
 	for (var i = 0; i < particleCount; i ++ ) {
@@ -664,6 +682,18 @@ function doExplosionLogic2(){
 	}
 	particleGeometry2.verticesNeedUpdate = true;
 }
+function doExplosionLogic3(){
+	if(!particles3.visible)return;
+	for (var i = 0; i < particleCount; i ++ ) {
+		particleGeometry3.vertices[i].multiplyScalar(explosionPower);
+	}
+	if(explosionPower>1.005){
+		explosionPower-=0.001;
+	}else{
+		particles3.visible=false;
+	}
+	particleGeometry3.verticesNeedUpdate = true;
+}
 function explode(objek){
 	particles.position.y=objek.position.y;
 	particles.position.z=4.8;
@@ -678,6 +708,22 @@ function explode(objek){
 	explosionPower=1.07;
 	particles.visible=true;
 }
+
+function explode3(objek){
+	particles3.position.y=objek.position.y;
+	particles3.position.z=4.8;
+	particles3.position.x=objek.position.x;
+	for (var i = 0; i < particleCount; i ++ ) {
+		var vertex = new THREE.Vector3();
+		vertex.x = -0.2+Math.random() * 0.4;
+		vertex.y = -0.2+Math.random() * 0.4 ;
+		vertex.z = -0.2+Math.random() * 0.4;
+		particleGeometry3.vertices[i]=vertex;
+	}
+	explosionPower=1.07;
+	particles3.visible=true;
+}
+
 function explode2(objek){
 	particles2.position.y=objek.position.y;
 	particles2.position.z=4.8;
