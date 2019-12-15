@@ -117,6 +117,7 @@ function Controller1() {
 	// var delta = clock.getDelta();
 	// var moveDistance = 5*delta;
 	//P1
+
 		if(keyboard.pressed("up") && !tinggi1) {
 			bounceValue=0.1;
 			jumping=true;
@@ -583,6 +584,7 @@ function updatetemp(){
 		temp2=-1;
 	}
 	
+	
 }
 function cektabrak(){
 	if(heroSphere.position.y>2)
@@ -608,6 +610,8 @@ function cektabrak(){
 	console.log(Math.abs(heroSphere.position.x - heroSphere2.position.x))
 	if(Math.abs(heroSphere.position.x - heroSphere2.position.x) < 0.3)
 	{
+		musik= new Audio('src/music/bounce_baru.mp3');
+		musik.play();
 		currentLane = temp1;
 		currentLane2 = temp2;
 		explode2(heroSphere);
@@ -661,11 +665,19 @@ function update(){
     if(clock.getElapsedTime()>treeReleaseInterval){
     	clock.start();
     	addPathTree();
-    	if(!hasCollided){
-
+    	if(hasCollided){
+			score1 = score1 - 1;
+			nabrak = new Audio('src/music/nabrak_pohon.mp3');
+			nabrak.play();
+			document.getElementById("scores").innerHTML = score1 + "-" + score2;
+			hasCollided = false;
 		}
-		if(!hasCollided2){ // belom scorenya
-
+		if(hasCollided2){ // belom scorenya
+			score2 = score2 - 1;
+			nabrak = new Audio('src/music/nabrak_pohon.mp3');
+			nabrak.play();
+			document.getElementById("scores").innerHTML = score1 + "-" + score2;
+			hasCollided2 = false;
 		}
     }
 	doTreeLogic();
@@ -675,7 +687,13 @@ function update(){
 	Controller1();
 	Controller2();
 	render();
-	requestAnimationFrame(update);//request next update
+	if(score2<=0 || score1<=0)
+	{
+
+	}
+	else{
+		requestAnimationFrame(update);//request next update
+	}
 	
 }
 function doTreeLogic(){
@@ -691,15 +709,11 @@ function doTreeLogic(){
 		if(treePos.distanceTo(heroSphere.position)<=0.6){
 			console.log("hit");
 			hasCollided=true;
-			score1 = score1 -1;
-			document.getElementById("scores").innerHTML = score1 + "-" + score2;
 			explode(heroSphere);
 		}
 		if(treePos.distanceTo(heroSphere2.position)<=0.6){
 			console.log("hit2");
 			hasCollided2=true;
-			score2 = score2 -1;
-			document.getElementById("scores").innerHTML = score1 + "-" + score2;
 			explode3(heroSphere2);
 		}
 		
@@ -725,6 +739,7 @@ function doExplosionLogic(){
 	}else{
 		particles.visible=false;
 	}
+
 	particleGeometry.verticesNeedUpdate = true;
 }
 function doExplosionLogic2(){
@@ -762,6 +777,7 @@ function explode(objek){
 		vertex.z = -0.2+Math.random() * 0.4;
 		particleGeometry.vertices[i]=vertex;
 	}
+
 	explosionPower=1.07;
 	particles.visible=true;
 }
