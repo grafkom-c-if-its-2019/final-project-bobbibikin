@@ -672,6 +672,8 @@ function update(){
 		}
 		if(hasCollided2){ // belom scorenya
 			score2 = score2 - 1;
+			nabrak = new Audio('src/music/nabrak_pohon.mp3');
+			nabrak.play();
 			document.getElementById("scores").innerHTML = score1 + "-" + score2;
 			hasCollided2 = false;
 		}
