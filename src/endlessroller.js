@@ -15,7 +15,7 @@ var tinggi1, tinggi2;
 function init() {
 	// set up the scene
 	createScene();
-
+	
 	//call game loop
 	update();
 }
@@ -32,7 +32,9 @@ function createScene(){
 	pathAngleValues=[1.52,1.57,1.62];
     sceneWidth=window.innerWidth;
     sceneHeight=window.innerHeight;
-	
+	bgmusik = new Audio('src/music/intro.mp3');
+	bgmusik.loop=true;
+	bgmusik.play();
 	// Fog	
 	scene = new THREE.Scene();//the 3d scene
 	// scene.fog = new THREE.FogExp2( 0xf0fff0, 0.14 ); 008cff
@@ -51,6 +53,7 @@ function createScene(){
 	dom.appendChild(stats.dom);
 	
 	createTreesPool();
+	// addSalju();
 	addWorld();
 	addHero();
 	addLight();
@@ -58,6 +61,20 @@ function createScene(){
 	addExplosion2();
 	addExplosion3();
 	
+	scene.children.forEach(function (child) {
+		if (child instanceof THREE.PointCloud) {
+			var vertices = child.geometry.vertices;
+			vertices.forEach(function (v) {
+				v.y = v.y - (v.velocityY);
+				v.x = v.x - (v.velocityX);
+				v.z = v.z - (v.velocityZ);
+
+				if (v.y <= 0) v.y = 60;
+				if (v.x <= -20 || v.x >= 20) v.velocityX = v.velocityX * -1;
+				if (v.z <= -20 || v.z >= 20) v.velocityZ = v.velocityZ * -1;
+			});
+		}
+	});
 	camera.position.z = 6.5;
 	camera.position.y = 3.5;
 	orbitControl = new THREE.OrbitControls( camera, renderer.domElement );//helper to rotate around in scene
@@ -165,6 +182,37 @@ function Controller2(){
 	// 		bounceValue2=0.06;
 	// 	}
 
+}
+function addSalju(){
+	
+	var texture1 = THREE.ImageUtils.loadTexture("images/snowflake1.png");
+	var texture2 = THREE.ImageUtils.loadTexture("images/snowflake2.png");
+	var texture3 = THREE.ImageUtils.loadTexture("images/snowflake3.png");
+	var texture4 = THREE.ImageUtils.loadTexture("images/snowflake5.png");
+
+	var material = new THREE.PointCloudMaterial({
+		size: 1,
+		transparent:true,
+		map:texture1,
+		blending: THREE.AdditiveBlending,
+		depthWrite:false,
+	});
+	var range = 40;
+	var geom = new THREE.Geometry();
+	for (var i = 0; i < 50; i++) {
+		var particle = new THREE.Vector3(
+				Math.random() * range - range / 2,
+				Math.random() * range * 1.5,
+				Math.random() * range - range / 2);
+		particle.velocityY = 0.1 + Math.random() / 5;
+		particle.velocityX = (Math.random() - 0.5) / 3;
+		particle.velocityZ = (Math.random() - 0.5) / 3;
+		geom.vertices.push(particle);
+	}
+
+	part = new THREE.PointCloud(geom, material);
+	part.sortParticles = true;
+	scene.add( part );
 }
 function addExplosion(){
 	particleGeometry = new THREE.Geometry();
