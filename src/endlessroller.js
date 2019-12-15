@@ -117,6 +117,7 @@ function Controller1() {
 	// var delta = clock.getDelta();
 	// var moveDistance = 5*delta;
 	//P1
+
 		if(keyboard.pressed("up") && !tinggi1) {
 			bounceValue=0.1;
 			jumping=true;
@@ -583,6 +584,7 @@ function updatetemp(){
 		temp2=-1;
 	}
 	
+	
 }
 function cektabrak(){
 	if(heroSphere.position.y>2)
@@ -687,7 +689,7 @@ function update(){
 	render();
 	if(score2<=0 || score1<=0)
 	{
-		
+
 	}
 	else{
 		requestAnimationFrame(update);//request next update
